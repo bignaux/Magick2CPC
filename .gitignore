@@ -44,3 +44,7 @@ cscope.out
 
 /Debug
 /po
+.cproject
+.project
+src/magick2cpc
+
