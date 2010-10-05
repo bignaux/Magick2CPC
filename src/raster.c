@@ -13,8 +13,7 @@ int raster(MagickWand *image_wand, char **outBuffer)
 	register long x;
 	long y;
 	unsigned long columns, rows;
-	int bufcpt = 0;
-	int cpt = 0;
+	int bufcnt = 0;
 
 	/*
 	 * allocate buffer
@@ -24,7 +23,7 @@ int raster(MagickWand *image_wand, char **outBuffer)
 	rows = MagickGetImageWidth(image_wand);
 
 	printf("Image size : %ldx%ld\n", columns, rows);
-	int outSize = 9 * rows * columns * sizeof(char) ;
+	int outSize = 9 * rows * columns * sizeof(char);
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)
 	{
@@ -45,10 +44,8 @@ int raster(MagickWand *image_wand, char **outBuffer)
 		if (pixels == (PixelWand **) NULL)
 			break;
 		for (x = 0; x < (long) rows; x++)
-		{
-			cpt = sprintf(localPointer + bufcpt, "defb &%2.2X\n", cpc2raster(pixel2cpc(pixels[x])));
-			bufcpt += cpt;
-		}
+			bufcnt += sprintf(localPointer + bufcnt, "defb &%2.2X\n",
+					cpc2raster(pixel2cpc(pixels[x])));
 	}
 
 	if (y < (long) columns)
@@ -58,5 +55,5 @@ int raster(MagickWand *image_wand, char **outBuffer)
 	MagickWandTerminus();
 
 	*outBuffer = localPointer;
-	return bufcpt;
+	return bufcnt;
 }

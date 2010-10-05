@@ -2,9 +2,11 @@ Magick2CPC
 ==========
 
 An image converter for CPC using ImageMagick.
+/!\ THIS SOFTWARE IS UNDER DEVELOPEMENT
+Feel free to join the project @ http://github.com/bignaux/Magick2CPC/
 
 - What is Magick2CPC?
-- Current features and usages
+- Current features, usage and status
 - Limitations and issues
 - Licensing
 - Installation of Magick2CPC
@@ -24,20 +26,25 @@ Magick2CPC :
 - is opensource and developer welcome ( git, wiki and bugtracker @ github ) 
 - uses the powerful MagickWand to have many image processing features
 
-Current features:
-----------------
+Current features and usage:
+--------------------------------
 
-* z88dk sprite :
+****** z88dk sprite ******
 
 Magick2cpc can produice source code for putsprite().
 http://www.z88dk.org/wiki/doku.php?id=library:sprites:monosprites
 if --boolean option is used, it add a visualisation of the image as a comment.
+STATUS : OK
 
-* cpcrslib sprite :
+****** cpcrslib sprite ******
+
 http://code.google.com/p/cpcrslib/
 if --boolean option is used, it produices non masked sprite.
 
-* CPC assembly raster
+STATUS : NEED SOME WORK
+  
+****** CPC assembly raster ******
+STATUS : OK
 
 Limitations and issues:
 ----------------------
@@ -76,7 +83,16 @@ instance.
 TODO :
 ----
 
-* Use ImageMagick "Custom Image Coders", see :
+[general]
+- manage sprite name
+- write examples
+
+[cpcrslib.c] :
+- manage if image is not multiple of ppb ( hard coded ppb=2 )
+- better alpha layer management
+- palette management : palette is hard coded in convertpalette() [cpcutils.c]
+
+* Use ImageMagick "Custom Image Coders" to provide ImageMagick plugins, see :
 - http://www.imagemagick.org/script/architecture.php
 - http://trac.imagemagick.org/browser/ImageMagick/trunk/coders/
 - http://www.sportmarketing-tbb.de/doc/libmagick4-dev/blob.html

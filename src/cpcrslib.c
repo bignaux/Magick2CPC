@@ -1,11 +1,7 @@
 #include "cpcrslib.h"
 
 /*
- * Convert image to cpcrslib
- *
- * 	TODO :
- * 	- manage if image is not multiple of ppb
- * 	- manage alpha layer
+ * Convert an image to a cpcrslib sprite or tile
  */
 
 int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
@@ -17,8 +13,7 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	PixelIterator *iterator;
 	PixelWand **pixels;
 	register long x;
-	int bufcpt;
-	int cpt = 0;
+	int bufcnt;
 
 	int ppb = 2;
 	unsigned char pixel;
@@ -46,7 +41,7 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	 */
 	filename = basename(filename);
 
-	bufcpt = sprintf(localPointer, "._%s\ndefb %d,%d", filename,
+	bufcnt = sprintf(localPointer, "._%s\ndefb %d,%d", filename,
 			(int) rows / 2, (int) columns);
 	iterator = NewPixelIterator(image_wand);
 	if (iterator == (PixelIterator *) NULL)
@@ -56,8 +51,7 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 		pixels = PixelGetNextIteratorRow(iterator, &rows);
 		if (pixels == (PixelWand **) NULL)
 			break;
-		cpt = sprintf(localPointer + bufcpt, "\ndefb ");
-		bufcpt += cpt;
+		bufcnt += sprintf(localPointer + bufcnt, "\ndefb ");
 		for (x = 0; x < (long) rows; x++)
 		{
 			// could it be replace by modulo
@@ -75,19 +69,16 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 			if (masked)
 			{
 				pixel = cpc2displaypixeldata(maskbyte, ppb);
-				cpt = sprintf(localPointer + bufcpt, "$%2.2X,", pixel);
-				bufcpt += cpt;
+				bufcnt += sprintf(localPointer + bufcnt, "$%2.2X,", pixel);
 			}
 			pixel = cpc2displaypixeldata(databyte, ppb);
-			cpt = sprintf(localPointer + bufcpt, "$%2.2X,", pixel);
-			bufcpt += cpt;
+			bufcnt += sprintf(localPointer + bufcnt, "$%2.2X,", pixel);
 			// verify with ppb != 2
 			x += ppb - 1;
 		}
-		bufcpt--;
+		bufcnt--;
 	}
-	cpt = sprintf(localPointer + bufcpt, "\n");
-	bufcpt += cpt;
+	bufcnt += sprintf(localPointer + bufcnt, "\n");
 
 	if (y < (long) columns)
 		ThrowWandException(image_wand);
@@ -96,5 +87,5 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	MagickWandTerminus();
 
 	*outBuffer = localPointer;
-	return bufcpt;
+	return bufcnt;
 }

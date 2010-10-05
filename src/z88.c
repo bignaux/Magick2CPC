@@ -13,13 +13,11 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 	PixelIterator *iterator;
 	PixelWand **pixels;
 	register long x;
-	int bufcpt = 0;
-	int cpt = 0;
+	int bufcnt = 0;
+	int commentcnt = 0;
 	unsigned char total = 0;
 	int bits = 0;
 	int outSize = 0;
-
-	int commentcpt = 0;
 
 	columns = MagickGetImageHeight(image_wand);
 	rows = MagickGetImageWidth(image_wand);
@@ -30,7 +28,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 	if (comment)
 	{
 		outSize = rows * (columns + 1) * sizeof(char) + 6;
-		bufcpt = outSize;
+		bufcnt = outSize;
 	}
 
 	/* data buffer */
@@ -45,15 +43,11 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 		return 0;
 	}
 	//  TODO : manage spritename
-	cpt = sprintf(localPointer + bufcpt, "char sprite[] = { %d, %d,",
+	bufcnt += sprintf(localPointer + bufcnt, "char sprite[] = { %d, %d,",
 			(int) rows, (int) columns);
-	bufcpt += cpt;
 
 	if (comment)
-	{
-		cpt = sprintf(localPointer + commentcpt, "/*\n");
-		commentcpt += cpt;
-	}
+		commentcnt = sprintf(localPointer + commentcnt, "/*\n");
 
 	/*
 	 convert it into a buffer
@@ -74,23 +68,14 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 			{
 				total |= (1 << (7 - bits));
 				if (comment)
-				{
-					cpt = sprintf(localPointer + commentcpt, "%c", PIXEL);
-					commentcpt += cpt;
-				}
+					commentcnt += sprintf(localPointer + commentcnt, "%c",
+							PIXEL);
 			}
-			else
-			{
-				if (comment)
-				{
-					cpt = sprintf(localPointer + commentcpt, "%c", NOPIXEL);
-					commentcpt += cpt;
-				}
-			}
+			else if (comment)
+				commentcnt += sprintf(localPointer + commentcnt, "%c", NOPIXEL);
 			if ((bits == 7) || (x == rows - 1))
 			{
-				cpt = sprintf(localPointer + bufcpt, " 0x%2.2X,", total);
-				bufcpt += cpt;
+				bufcnt += sprintf(localPointer + bufcnt, " 0x%2.2X,", total);
 				total = 0;
 				bits = 0;
 			}
@@ -98,20 +83,14 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 				bits++;
 		}
 		if (comment)
-		{
-			cpt = sprintf(localPointer + commentcpt, "\n");
-			commentcpt += cpt;
-		}
+			commentcnt += sprintf(localPointer + commentcnt, "\n");
 	}
 
-	cpt = sprintf(localPointer + bufcpt - 1, " };\n");
-	bufcpt += cpt - 1;
+	bufcnt += sprintf(localPointer + bufcnt - 1, " };\n");
+	bufcnt--;
 
 	if (comment)
-	{
-		cpt = sprintf(localPointer + commentcpt, "*/\n");
-		commentcpt += cpt;
-	}
+		commentcnt += sprintf(localPointer + commentcnt, "*/\n");
 
 	if (y < (long) columns)
 		ThrowWandException(image_wand);
@@ -120,5 +99,5 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 	MagickWandTerminus();
 
 	*outBuffer = localPointer;
-	return bufcpt;
+	return bufcnt;
 }
