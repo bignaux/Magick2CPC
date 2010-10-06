@@ -15,8 +15,10 @@ Feel free to join the project @ http://github.com/bignaux/Magick2CPC/
 What is Magick2CPC?
 ------------------
 
-Magick2CPC is an image converter that produice source code to CPC and other target.
-Unlike other tool, it tend to be integrating as a part of a toolchain like in Makefile.
+Magick2CPC is an image converter that produce source code to CPC and other target. It supports
+all ImageMagick image format but doest rezise image for you. You have to provide well sized image
+that fit with the feature you want to perform. Unlike graphic tools, it tend to be integrating 
+as a part of a toolchain like in Makefile.
 
 Magick2CPC :
 
@@ -31,7 +33,7 @@ Current features and usage:
 
 ****** z88dk sprite ******
 
-Magick2cpc can produice source code for putsprite().
+Magick2cpc can produce source code for putsprite().
 http://www.z88dk.org/wiki/doku.php?id=library:sprites:monosprites
 if --boolean option is used, it add a visualisation of the image as a comment.
 STATUS : OK
@@ -39,10 +41,12 @@ STATUS : OK
 ****** cpcrslib sprite ******
 
 http://code.google.com/p/cpcrslib/
-if --boolean option is used, it produices non masked sprite.
+if --boolean option is used, it produces non masked sprite.
 
 STATUS : NEED SOME WORK
-  
+
+http://www.amstrad.es/espsoft/herramientas/sprot11.html graphic tool, Windows, closed source
+
 ****** CPC assembly raster ******
 STATUS : OK
 
@@ -54,6 +58,7 @@ immutable issues!
 
 - tested only on Linux (other OS support is planned)
 - you should provide ready to transform image.
+- No CPC+ specific
 
 Licensing:
 ---------
@@ -88,9 +93,9 @@ TODO :
 - write examples
 
 [cpcrslib.c] :
-- manage if image is not multiple of ppb ( hard coded ppb=2 )
+- manage if image is not multiple of ppb
 - better alpha layer management
-- palette management : palette is hard coded in convertpalette() [cpcutils.c]
+- palette management : in progress [cpcutils.c]
 
 * Use ImageMagick "Custom Image Coders" to provide ImageMagick plugins, see :
 - http://www.imagemagick.org/script/architecture.php

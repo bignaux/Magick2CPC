@@ -4,7 +4,7 @@
  * Convert an image to a cpcrslib sprite or tile
  */
 
-int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
+int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, char mode)
 {
 
 	char *localPointer;
@@ -14,12 +14,17 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	PixelWand **pixels;
 	register long x;
 	int bufcnt;
+	int palettesize;
 
-	int ppb = 2;
+	int ppb = (int) modes[mode].ppb;
 	unsigned char pixel;
 	unsigned char databyte[ppb];
 	unsigned char maskbyte[ppb];
 	int j;
+
+	unsigned char palette[modes[mode].nbcolors];
+	memset(palette, 28, modes[mode].nbcolors * sizeof(unsigned char));
+	palettesize = 16 + 2 * modes[mode].nbcolors * sizeof(unsigned char);
 
 	char * filename = MagickGetImageFilename(image_wand);
 
@@ -27,7 +32,8 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	rows = MagickGetImageWidth(image_wand);
 
 	printf("Size %ldx%ld\n", columns, rows);
-	int outSize = columns * (5+4*rows) * sizeof(char) + 100 ; // 100 to store buffer name and size...
+	// Labels can be up to 14(?) characters in length
+	int outSize = palettesize + columns * (5 + 4 * rows) * sizeof(char) + 100; // 100 to store buffer name and size...
 	printf("outSize=%d\n", outSize);
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)
@@ -64,7 +70,8 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 					else
 						maskbyte[j] = 0xFF;
 				}
-				databyte[j] = convertpalette(pixel2cpc(pixels[x + j]));
+				databyte[j] = palettise(pixel2cpc(pixels[x + j]), palette,
+						modes[mode].nbcolors);
 			}
 			if (masked)
 			{
@@ -85,6 +92,13 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 	iterator = DestroyPixelIterator(iterator);
 	image_wand = DestroyMagickWand(image_wand);
 	MagickWandTerminus();
+
+	// not tested yet
+	qsort(palette, modes[mode].nbcolors, sizeof(char), sort);
+	bufcnt += sprintf(localPointer + bufcnt, "\n._tintas\ndefb ");
+	for (j = 0; j < 15; j++)
+		bufcnt += sprintf(localPointer + bufcnt, "%d,", palette[j]);
+	bufcnt += sprintf(localPointer + bufcnt, "%d\n", palette[++j]);
 
 	*outBuffer = localPointer;
 	return bufcnt;

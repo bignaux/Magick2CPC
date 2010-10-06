@@ -44,13 +44,13 @@ const struct option magick2cpc_config_opts[] =
 { "output", required_argument, NULL, 'o' },
 { "boolean", no_argument, NULL, 'b' },
 { "help", no_argument, NULL, 'h' },
-{ NULL, no_argument, NULL, 0 }, };
+{ NULL, no_argument, NULL, 0 } };
 
 void writebuffer(char * filename, int bufferSize, char *outBuffer)
 {
 	FILE *outFile;
 	outFile = fopen(filename, "wb");
-	if ( outFile == NULL)
+	if (outFile == NULL)
 	{
 		perror("writebuffer()");
 		exit(EXIT_FAILURE);
@@ -85,6 +85,7 @@ int main(int argc, char **argv)
 	const char *all_params = CONFIG_PARAMS;
 	int long_index;
 	int option;
+	char mode = 0;
 	int m_idx = 0;
 
 	do
@@ -100,7 +101,7 @@ int main(int argc, char **argv)
 			break;
 		case 'c':
 			image_wand = openimage(optarg);
-			bufferSize = cpcrslib(image_wand, &outBuffer, optbool);
+			bufferSize = cpcrslib(image_wand, &outBuffer, optbool, mode);
 			break;
 		case 'z':
 			image_wand = openimage(optarg);

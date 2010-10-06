@@ -2,10 +2,13 @@
 #define __CPCUTILS_H__
 
 #include <wand/MagickWand.h>
+#include "cpc.h"
 
+int sort(const void *x, const void *y);
 unsigned char pixel2cpc(const PixelWand *wand);
 unsigned char cpc2raster(unsigned char soft_colornum);
-unsigned char convertpalette(unsigned char cpcpixel);
+unsigned char palettise(unsigned char cpcpixel, unsigned char * palette,
+		char nbcolors);
 unsigned char cpc2displaypixeldata(unsigned char * pixel, int ppb);
 unsigned char cpc2displaypixeldata2ppb(unsigned char * pixel);
 unsigned char cpc2displaypixeldata4ppb(unsigned char * pixel);

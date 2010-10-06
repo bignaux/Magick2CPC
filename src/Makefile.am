@@ -23,7 +23,8 @@ magick2cpc_SOURCES = \
 	raster.c      \
 	raster.h      \
 	cpcrslib.c      \
-	cpcrslib.h
+	cpcrslib.h      \
+	cpc.c
 
 magick2cpc_LDFLAGS = 
 

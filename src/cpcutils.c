@@ -1,5 +1,8 @@
 #include "cpcutils.h"
-#include "cpc.h"
+
+int sort(const void *x, const void *y) {
+  return (*(char*)x - *(char*)y);
+}
 
 /*
  convert RGB pixel from the wand to 3-level RGB
@@ -36,7 +39,7 @@ unsigned char pixel2cpc(const PixelWand *wand)
 }
 
 /*
- return the hardware color
+ * Return the hardware color
  */
 unsigned char cpc2raster(unsigned char soft_colornum)
 {
@@ -45,16 +48,22 @@ unsigned char cpc2raster(unsigned char soft_colornum)
 	return (soft_to_hw[soft_colornum]);
 }
 
-unsigned char convertpalette(unsigned char cpcpixel)
+/*
+ *	Return pixel indexed color of cpcpixel and complete palette
+ *	TODO manage image with less than nbcolors
+ */
+unsigned char palettise(unsigned char cpcpixel,unsigned char * palette, char nbcolors)
 {
-	unsigned char palette[] =
-	{ 0, 13, 1, 6, 26, 24, 15, 8, 10, 22, 14, 3, 18, 4, 11, 25 };
 	int i;
-	for (i = 0; i < 15; i++)
+	//  we could try to memorize last color and test it first .
+	for (i = 0; i < nbcolors; i++)
 	{
+		if (palette[i] == 28)
+			palette[i] = cpcpixel;
 		if (cpcpixel == palette[i])
 			return (unsigned char) i;
 	}
+	printf("palettise error\n");
 	return 0;
 }
 
