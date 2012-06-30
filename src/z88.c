@@ -1,6 +1,6 @@
 #include "z88.h"
 
-/*
+/**
  *  generate sprite for the z88dk putsprite function ( 1bit per pixel )
  */
 
@@ -33,7 +33,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 
 	/* data buffer */
 
-	// TODO : better calculation of size
+	/// @todo better calculation of size
 	outSize += rows * columns * sizeof(char) + 100;// 100 to store buffer name and size...
 	printf("outSize=%d\n", outSize);
 	localPointer = (char*) malloc(outSize);
@@ -42,7 +42,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 		perror("malloc()");
 		return 0;
 	}
-	//  TODO : manage spritename
+	/// @todo manage spritename
 	bufcnt += sprintf(localPointer + bufcnt, "char sprite[] = { %d, %d,",
 			(int) rows, (int) columns);
 

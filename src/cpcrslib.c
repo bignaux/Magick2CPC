@@ -1,7 +1,12 @@
 #include "cpcrslib.h"
 
-/*
+/**
  * Convert an image to a cpcrslib sprite or tile
+ * @param image_wand the magick wand to transform
+ * @param outBuffer destination buffer after transformation
+ * @param masked if true, generate masked sprite
+ * @param mode CPC graphic mode @ref cpc_mode
+ * @return size of outBuffer
  */
 
 int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, char mode)
@@ -38,7 +43,7 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, char mode)
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)
 	{
-		perror("malloc");
+		perror(":malloc");
 		return 0;
 	}
 

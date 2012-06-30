@@ -7,7 +7,11 @@
  * http://cepece.info/amstrad/docs/graphics.html
  * http://www.cpcwiki.eu/index.php/Video_modes
  * http://www.grimware.org/doku.php/documentations/devices/crtc
- *
+ */
+
+/**
+ * @page cpc_mode CPC graphic modes :
+ * @verbatim	
  * 		+-------+-------+-------+--------+---------+----------+
  * 		|  mode |  ppb 	|  bpp 	| colors |  normal | overscan |
  * 		+-------+-------+-------+--------+---------+----------+
@@ -19,6 +23,7 @@
  * 		+-------+-------+-------+--------+---------+----------+
  * 		|	3	|	?	|   2	| 	 4	 | 160x200 |	  N.C |
  * 		+-------+-------+-------+--------+---------+----------+
+ * @endverbatim
  */
 
 typedef struct
@@ -29,9 +34,9 @@ typedef struct
 
 typedef struct
 {
-	char ppb;
-	char bpp;
-	char nbcolors;
+	unsigned char ppb;
+	unsigned char bpp;
+	unsigned char nbcolors;
 	resolution normal;
 	resolution overscan;
 } mode_info;

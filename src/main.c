@@ -49,14 +49,20 @@ const struct option magick2cpc_config_opts[] =
 void writebuffer(char * filename, int bufferSize, char *outBuffer)
 {
 	FILE *outFile;
+	size_t written;
 	outFile = fopen(filename, "wb");
 	if (outFile == NULL)
 	{
-		perror("writebuffer()");
+		perror("__func__  fopen");
 		exit(EXIT_FAILURE);
 	}
 	printf("Write %d bytes in %s\n", bufferSize, filename);
-	fwrite(outBuffer, 1, bufferSize, outFile);
+	written = fwrite(outBuffer, 1, bufferSize, outFile);
+	if ( written != bufferSize )
+	{
+		perror("__func__ :fwrite");
+		// ret = EXIT_FAILURE;
+	}
 	fclose(outFile);
 	free(outBuffer);
 	outBuffer = NULL;

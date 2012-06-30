@@ -4,9 +4,9 @@ int sort(const void *x, const void *y) {
   return (*(char*)x - *(char*)y);
 }
 
-/*
+/**
  convert RGB pixel from the wand to 3-level RGB
- and return the software color read in cpc_color_soft[] table.
+ @return the software color read in cpc_color_soft[] table.
  */
 unsigned char pixel2cpc(const PixelWand *wand)
 {
@@ -38,8 +38,10 @@ unsigned char pixel2cpc(const PixelWand *wand)
 	return -1;
 }
 
-/*
- * Return the hardware color
+/**
+ * Return the hardware color from a software one according to @ref soft_to_hw table.
+ * @param the software color
+ * @return the hardware color
  */
 unsigned char cpc2raster(unsigned char soft_colornum)
 {
@@ -48,9 +50,9 @@ unsigned char cpc2raster(unsigned char soft_colornum)
 	return (soft_to_hw[soft_colornum]);
 }
 
-/*
- *	Return pixel indexed color of cpcpixel and complete palette
- *	TODO manage image with less than nbcolors
+/**
+ *	@return pixel indexed color of cpcpixel and complete palette
+ *	@todo manage image with less than nbcolors
  */
 unsigned char palettise(unsigned char cpcpixel,unsigned char * palette, char nbcolors)
 {
