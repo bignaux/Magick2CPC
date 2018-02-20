@@ -9,7 +9,7 @@
  * @return size of outBuffer
  */
 
-int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, char mode)
+int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned char mode)
 {
 
 	char *localPointer;

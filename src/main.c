@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	const char *all_params = CONFIG_PARAMS;
 	int long_index;
 	int option;
-	char mode = 0;
+	unsigned char mode = 0;
 	int m_idx = 0;
 
 	do

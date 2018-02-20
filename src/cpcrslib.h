@@ -7,6 +7,6 @@
 #include <libgen.h>
 #include "cpcutils.h"
 
-int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, char mode);
+int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned char mode);
 
 #endif
