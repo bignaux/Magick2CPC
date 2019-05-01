@@ -1,3 +1,2 @@
 language: nix
 sudo: disabled
-script: nix-build -E 'with import <nixpkgs> {}; callPackage ./. {}'
