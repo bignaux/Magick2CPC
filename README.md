@@ -1,5 +1,6 @@
 Magick2CPC
 ==========
+[![Build Status](https://travis-ci.org/bignaux/Magick2CPC.svg?branch=master)](https://travis-ci.org/bignaux/Magick2CPC/)
 
 An image converter for CPC using ImageMagick.
 /!\ THIS SOFTWARE IS UNDER DEVELOPEMENT
