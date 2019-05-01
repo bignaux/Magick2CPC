@@ -31,14 +31,14 @@ Magick2CPC :
 Current features and usage:
 --------------------------------
 
-****** z88dk sprite ******
+**z88dk sprite**
 
 Magick2cpc can produce source code for putsprite().
 http://www.z88dk.org/wiki/doku.php?id=library:sprites:monosprites
 if --boolean option is used, it add a visualisation of the image as a comment.
 STATUS : OK
 
-****** cpcrslib sprite ******
+**cpcrslib sprite**
 
 http://code.google.com/p/cpcrslib/
 if --boolean option is used, it produces non masked sprite.
@@ -47,7 +47,7 @@ STATUS : NEED SOME WORK
 
 http://www.amstrad.es/espsoft/herramientas/sprot11.html graphic tool, Windows, closed source
 
-****** CPC assembly raster ******
+**CPC assembly raster** 
 STATUS : OK
 
 Limitations and issues:
