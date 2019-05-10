@@ -41,7 +41,7 @@ STATUS : OK
 
 **cpcrslib sprite**
 
-http://code.google.com/p/cpcrslib/
+https://sourceforge.net/projects/cpcrslib/
 if --boolean option is used, it produces non masked sprite.
 
 STATUS : NEED SOME WORK
