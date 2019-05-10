@@ -4,9 +4,9 @@
 CC=zcc
 CFLAGS=+cpc -v -lcpcfs -lm -subtype=dsk -create-app
 
-all: triskel.dsk
+all: nixos.dsk
 
-triskel.dsk : triskel.c
+nixos.dsk : nixos.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: clean
