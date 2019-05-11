@@ -50,13 +50,15 @@ void writebuffer(char * filename, int bufferSize, char *outBuffer)
 {
 	FILE *outFile;
 	size_t written;
-	outFile = fopen(filename, "wb");
+	if ( filename == NULL ) outFile = stdout;
+	else outFile = fopen(filename, "wb"); // 
+
 	if (outFile == NULL)
 	{
 		perror("__func__  fopen");
 		exit(EXIT_FAILURE);
 	}
-	printf("Write %d bytes in %s\n", bufferSize, filename);
+	fprintf(stderr,"Write %d bytes in %s\n", bufferSize, filename);
 	written = fwrite(outBuffer, 1, bufferSize, outFile);
 	if ( written != bufferSize )
 	{
@@ -91,7 +93,7 @@ int main(int argc, char **argv)
 	const char *all_params = CONFIG_PARAMS;
 	int long_index;
 	int option;
-	unsigned char mode = 2;
+	unsigned char mode = 0;
 	int m_idx = 0;
 
 	do
@@ -120,11 +122,11 @@ int main(int argc, char **argv)
 			optbool = true;
 			break;
 		case 'h':
-			fprintf(stdout, MAGICK2CPC_USAGE);
+			fprintf(stderr, MAGICK2CPC_USAGE);
 			exit(EXIT_SUCCESS);
 			break;
 		case '?':
-			fprintf(stdout, "Use --help, -h option for more informations.\n");
+			fprintf(stderr, "Use --help, -h option for more informations.\n");
 			exit(EXIT_FAILURE);
 			break;
 		default:
@@ -132,14 +134,14 @@ int main(int argc, char **argv)
 		}
 		m_idx++;
 
-		if (bufferSize > 0 && filename != NULL)
-		{
+	} while (option != -1);
+
+	if (bufferSize > 0) // && filename != NULL)
+	{
 			writebuffer(filename, bufferSize, outBuffer);
 			filename = NULL;
 			bufferSize = 0;
-		}
-
-	} while (option != -1);
+	}
 
 	return (EXIT_SUCCESS);
 }

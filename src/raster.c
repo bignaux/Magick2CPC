@@ -22,7 +22,7 @@ int raster(MagickWand *image_wand, char **outBuffer)
 	columns = MagickGetImageHeight(image_wand);
 	rows = MagickGetImageWidth(image_wand);
 
-	printf("Image size : %ldx%ld\n", columns, rows);
+	fprintf(stderr,"Image size : %ldx%ld\n", columns, rows);
 	int outSize = 9 * rows * columns * sizeof(char);
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)

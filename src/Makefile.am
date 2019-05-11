@@ -14,7 +14,7 @@ AM_CFLAGS =\
 bin_PROGRAMS = magick2cpc
 
 magick2cpc_SOURCES = \
-	main.c      \
+	magick2cpc.c      \
 	cpcutils.c      \
 	cpcutils.h      \
 	cpc.h      \

@@ -10,10 +10,10 @@ int sort(const void *x, const void *y) {
  */
 unsigned char pixel2cpc(const PixelWand *wand)
 {
-	//sprintf(pixelstring,"$FF,$xx"); //,PixelGetAlpha(wand),PixelGetRed(wand));
+	//sfprintf(stderr,pixelstring,"$FF,$xx"); //,PixelGetAlpha(wand),PixelGetRed(wand));
 	double rgb[3] =
 	{ PixelGetRed(wand), PixelGetGreen(wand), PixelGetBlue(wand) };
-	//printf("r=%f,g=%f,b=%f",rgb[0],rgb[1],rgb[2]);
+	//fprintf(stderr,"r=%f,g=%f,b=%f",rgb[0],rgb[1],rgb[2]);
 	unsigned char cpc_rgb[3] =
 	{ 0, 0, 0 };
 	int i;
@@ -24,7 +24,7 @@ unsigned char pixel2cpc(const PixelWand *wand)
 		else if ((rgb[i] > 0.33) && (rgb[i] < 0.66))
 			cpc_rgb[i] = 0x7F;
 	}
-	//printf("r=%x,g=%x,b=%x",cpc_rgb[0],cpc_rgb[1],cpc_rgb[2]);
+	//fprintf(stderr,"r=%x,g=%x,b=%x",cpc_rgb[0],cpc_rgb[1],cpc_rgb[2]);
 	for (i = 0; i < 27; i++)
 	{
 		if ((cpc_rgb[0] == cpc_color_soft[i][0]) && (cpc_rgb[1]
@@ -65,7 +65,7 @@ unsigned char palettise(unsigned char cpcpixel,unsigned char * palette, char nbc
 		if (cpcpixel == palette[i])
 			return (unsigned char) i;
 	}
-	printf("palettise error\n");
+	fprintf(stderr,"palettise error\n");
 	return 0;
 }
 

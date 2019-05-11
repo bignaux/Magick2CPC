@@ -36,10 +36,10 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned cha
 	columns = MagickGetImageHeight(image_wand);
 	rows = MagickGetImageWidth(image_wand);
 
-	printf("Size %ldx%ld\n", columns, rows);
+	fprintf(stderr,"Size %ldx%ld\n", columns, rows);
 	// Labels can be up to 14(?) characters in length
 	int outSize = palettesize + columns * (5 + 4 * rows) * sizeof(char) + 100; // 100 to store buffer name and size...
-	printf("outSize=%d\n", outSize);
+	fprintf(stderr,"outSize=%d\n", outSize);
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)
 	{

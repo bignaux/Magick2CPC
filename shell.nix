@@ -4,12 +4,13 @@ with import <nixpkgs> {}; # nix-shell -I nixpkgs=/home/genesis/devel/nixpkgs
 stdenv.mkDerivation rec{
   name = "magick2cpc";
 
-  nativeBuildInputs = [  pkgconfig  doxygen  ];
+  nativeBuildInputs = [  pkgconfig doxygen ];
 
   buildInputs =
     [ 
       imagemagick
       autoreconfHook
+      ronn
     ] ++ checkInputs;
 
   checkInputs = [

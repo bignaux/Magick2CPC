@@ -4,7 +4,7 @@
 
 #include <cpc.h>
 #include <stdio.h>
-#include "nixos.h"
+#include "z88dk-cpc_PutSp.h"
 
 struct Sprite {
     uchar height;

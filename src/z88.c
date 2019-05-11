@@ -22,7 +22,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 	columns = MagickGetImageHeight(image_wand);
 	rows = MagickGetImageWidth(image_wand);
 
-	printf("Size %ldx%ld\n", columns, rows);
+	fprintf(stderr,"Size %ldx%ld\n", columns, rows);
 
 	/* comment buffer */
 	if (comment)
@@ -35,7 +35,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 
 	/// @todo better calculation of size
 	outSize += rows * columns * sizeof(char) + 100;// 100 to store buffer name and size...
-	printf("outSize=%d\n", outSize);
+	fprintf(stderr,"outSize=%d\n", outSize);
 	localPointer = (char*) malloc(outSize);
 	if (localPointer == NULL)
 	{

@@ -1,28 +1,36 @@
 CC=zcc
-CFLAGS=+cpc -v -lcpcfs -lm -subtype=dsk -create-app
+# zcc +cpc -v -lcpcfs -lm -create-app -subtype=dsk z88dk-putsprite.c -o z88dk-putsprite.dsk
+CFLAGS=+cpc -v -lcpcfs -lm -create-app
 EMULATOR=cap32
 
-all: nixos.dsk
+all: test.dsk
 
-run: nixos.dsk
+run: test.dsk
 	$(EMULATOR) -a 'run"nixos.cpc' $^
 
-# need to be fixed in sources
-nixos.h: nixos-logo-mode0.png
-	../src/magick2cpc -c $^ -o $@
-	#echo -e "extern uchar nixos[];\n""#asm\n" | cat - $@
+# TODO
+test.dsk: z88dk-cpc_PutSp.cpc z88dk-putsprite.cpc
+	#iDSK $@ -n -i -t 1 $^
+	#appmake +cpc --disk  -b $@ -c $^ --org 4608
+	iDSK test.dsk  -n  -i z88dk-cpc_PutSp.cpc z88dk-putsprite.cpc  -e 1200 -c 1200 -t 1
 
-nixos.dsk: nixos.c nixos.h
+# TODO: fix in sources
+z88dk-cpc_PutSp.h: nixos-logo-mode0.png
+	cp append.c $@
+	../src/magick2cpc -c $^ | sed '1,2d' >> $@
+	echo "#endasm" >> $@
+
+z88dk-cpc_PutSp.cpc: z88dk-cpc_PutSp.c z88dk-cpc_PutSp.h
 	$(CC) $(CFLAGS) $< -o $@
 
 z88dk-putsprite.h: nixos-logo-mode2.png
 	../src/magick2cpc -z $^ -o $@
 	uncrustify -c uncrustify-c-cpp.cfg --replace z88dk-putsprite.h
 
-z88dk-putsprite.dsk: z88dk-putsprite.c z88dk-putsprite.h
+z88dk-putsprite.cpc: z88dk-putsprite.c z88dk-putsprite.h
 	$(CC) $(CFLAGS) $< -o $@
 
 .PHONY: all clean run
 
 clean:
-	@rm -f *.wav *.dsk *.cpc *.bin *.h
+	@rm -f *.wav *.dsk *.cpc *.bin *.h zcc_opt.def screenshot_* *~
