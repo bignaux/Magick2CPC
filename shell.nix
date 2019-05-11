@@ -1,7 +1,7 @@
 #with import (fetchTarball channel:nixos-19.03) {};
 with import <nixpkgs> {}; # nix-shell -I nixpkgs=/home/genesis/devel/nixpkgs
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec{
   name = "magick2cpc";
 
   nativeBuildInputs = [  pkgconfig  doxygen  ];
@@ -10,9 +10,10 @@ stdenv.mkDerivation {
     [ 
       imagemagick
       autoreconfHook
-    ];
+    ] ++ checkInputs;
 
   checkInputs = [
+      uncrustify
   	  caprice32
   	  z88dk
   	  gdb
