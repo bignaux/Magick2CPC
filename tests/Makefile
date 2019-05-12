@@ -15,7 +15,8 @@ test.dsk: z88dk-cpc_PutSp.cpc z88dk-putsprite.cpc
 	iDSK test.dsk  -n  -i z88dk-cpc_PutSp.cpc z88dk-putsprite.cpc  -e 1200 -c 1200 -t 1
 
 # TODO: fix in sources
-z88dk-cpc_PutSp.h: nixos-logo-mode0.png
+# source https://www.peppercarrot.com/0_sources/0ther/artworks/hi-res/2019-02-27_Flight-of-Spring_by-David-Revoy.jpg
+z88dk-cpc_PutSp.h: peppercarrot.png
 	cp append.c $@
 	../src/magick2cpc -c $^ | sed '1,2d' >> $@
 	echo "#endasm" >> $@
@@ -23,7 +24,9 @@ z88dk-cpc_PutSp.h: nixos-logo-mode0.png
 z88dk-cpc_PutSp.cpc: z88dk-cpc_PutSp.c z88dk-cpc_PutSp.h
 	$(CC) $(CFLAGS) $< -o $@
 
-z88dk-putsprite.h: nixos-logo-mode2.png
+# source https://www.peppercarrot.com/0_sources/0ther/artworks/hi-res/2018-11-28_coc_by-David-Revoy.jpg
+# limite by uncrustify : #define AL_SIZE 8000
+z88dk-putsprite.h: coc.png
 	../src/magick2cpc -z $^ -o $@
 	uncrustify -c uncrustify-c-cpp.cfg --replace z88dk-putsprite.h
 

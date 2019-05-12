@@ -16,10 +16,15 @@ Feel free to join the project @ http://github.com/bignaux/Magick2CPC/
 What is Magick2CPC?
 ------------------
 
-Magick2CPC is an image converter that produce source code to CPC and other target. It supports
-all ImageMagick image format but doest rezise image for you. You have to provide well sized image
-that fit with the feature you want to perform. Unlike graphic tools, it tend to be integrating 
-as a part of a toolchain like in Makefile.
+![](pc-mode0.png)
+<!-- https://www.peppercarrot.com/ -->
+Pepper & Carrot / mode 0
+
+
+Magick2CPC is an image converter that produce source code to CPC and other target. ~~It supports
+all ImageMagick image format~~ but does not rezise image for you. You have to provide well sized image that fit with the feature you want to perform. Unlike graphic tools, it tend to be integrating as a part of a software toolchain like in Makefile.
+
+see http://jubatian.com/articles/using-non-square-pixel-aspect-ratios-in-gimp/
 
 Magick2CPC :
 
@@ -43,8 +48,9 @@ STATUS : OK
 
 https://sourceforge.net/projects/cpcrslib/
 if --boolean option is used, it produces non masked sprite.
+http://www.cpcwiki.eu/index.php/CPCRSlib list some games with source using it.
 
-STATUS : NEED SOME WORK
+STATUS : NEED SOME WORK : only mode 0 tested.
 
 http://www.amstrad.es/espsoft/herramientas/sprot11.html graphic tool, Windows, closed source
 

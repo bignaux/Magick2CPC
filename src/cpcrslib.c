@@ -99,8 +99,9 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned cha
 	MagickWandTerminus();
 
 	// not tested yet
-	qsort(palette, modes[mode].nbcolors, sizeof(char), sort);
+	// qsort(palette, modes[mode].nbcolors, sizeof(char), sort);
 	bufcnt += sprintf(localPointer + bufcnt, "\n._tintas\ndefb ");
+	//TODO: mode 0 only
 	for (j = 0; j < 15; j++)
 		bufcnt += sprintf(localPointer + bufcnt, "%d,", palette[j]);
 	bufcnt += sprintf(localPointer + bufcnt, "%d\n", palette[++j]);
