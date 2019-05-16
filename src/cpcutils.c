@@ -54,7 +54,7 @@ unsigned char cpc2raster(unsigned char soft_colornum)
  *	@return pixel indexed color of cpcpixel and complete palette
  *	@todo manage image with less than nbcolors
  */
-unsigned char palettise(unsigned char cpcpixel,unsigned char * palette, char nbcolors)
+unsigned char palettise( const unsigned char cpcpixel,unsigned char * palette, const char nbcolors)
 {
 	int i;
 	//  we could try to memorize last color and test it first .

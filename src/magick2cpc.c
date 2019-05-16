@@ -59,6 +59,7 @@ void writebuffer(char * filename, int bufferSize, char *outBuffer)
 		exit(EXIT_FAILURE);
 	}
 	fprintf(stderr,"Write %d bytes in %s\n", bufferSize, filename);
+	fprintf(stderr, "outBuffer = 0x%p\n", outBuffer);
 	written = fwrite(outBuffer, 1, bufferSize, outFile);
 	if ( written != bufferSize )
 	{
@@ -93,7 +94,6 @@ int main(int argc, char **argv)
 	const char *all_params = CONFIG_PARAMS;
 	int long_index;
 	int option;
-	unsigned char mode = 0;
 	int m_idx = 0;
 
 	do
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 			break;
 		case 'c':
 			image_wand = openimage(optarg);
-			bufferSize = cpcrslib(image_wand, &outBuffer, optbool, mode);
+			bufferSize = cpcrslib(image_wand, &outBuffer, optbool);
 			break;
 		case 'z':
 			image_wand = openimage(optarg);

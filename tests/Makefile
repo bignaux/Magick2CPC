@@ -17,9 +17,7 @@ test.dsk: z88dk-cpc_PutSp.cpc z88dk-putsprite.cpc
 # TODO: fix in sources
 # source https://www.peppercarrot.com/0_sources/0ther/artworks/hi-res/2019-02-27_Flight-of-Spring_by-David-Revoy.jpg
 z88dk-cpc_PutSp.h: peppercarrot.png
-	cp append.c $@
-	../src/magick2cpc -c $^ | sed '1,2d' >> $@
-	echo "#endasm" >> $@
+	../src/magick2cpc -c $^ | sed 's/peppercarrot.png/nixos/' >> $@
 
 z88dk-cpc_PutSp.cpc: z88dk-cpc_PutSp.c z88dk-cpc_PutSp.h
 	$(CC) $(CFLAGS) $< -o $@

@@ -33,7 +33,8 @@ swapBitsInPair(uchar x)
 }
 
 /* ppb : pixels per byte */
-mirrored(uchar * buffer, const uchar height, const uchar width, const uchar ppb)
+// creates a vertical mirror image by reflecting the pixels around the central x-axis.
+FlipImage(uchar * buffer, const uchar height, const uchar width, const uchar ppb)
 {
     uchar temp, * pbuffer = buffer;
     uchar w, h = 0;
@@ -63,15 +64,11 @@ const uchar firm2hard[] = { 20, 4,  21, 28, 24, 29, 12, 5,
                             7, 15, 18, 2,  19, 26, 25, 27, 10, 3,  11 };
 
 void
-set_palette(const uchar * ink, const uchar ppb)
+set_palette(const uchar * ink, const uchar nbcolors)
 {
-    uchar i, j;
+    uchar j;
 
-    if (ppb == 2) i = 16;   
-    else if (ppb == 4) i = 4;
-    else if (ppb == 8) i = 2;
-
-    for (j = 0; j < i; j++) {
+    for (j = 0; j < nbcolors; j++) {
         cpc_SetColour(j, firm2hard[ink[j]]);
     }
 }
@@ -91,9 +88,9 @@ main()
     // itoa(size,txt_numb,10);
     // cpc_PrintGphStrXY(txt_numb,0,0);
 
-    mirrored(buffer, 52, 15, 2);
+    FlipImage(buffer, 52, 15, 2);
 
-    set_palette(tintas, 2);
+    set_palette(tintas, 16);
 
     cpc_SetBorder(10);
     cpc_DisableFirmware();
@@ -110,7 +107,7 @@ main()
     // cpc_PutSp(buffer,52,15,scr);
 
     // TODO : input png dimension has to be multiple of 2
-    cpc_PutSpXOR(nixos, 200, 78, scr); // cpc_PutSp(char *sprite, int height, int width, unsigned int address)
+    cpc_PutSpXOR(nixos, 200, 80, scr); // cpc_PutSp(char *sprite, int height, int width, unsigned int address)
 
     while (!cpc_AnyKeyPressed()) { }
 }

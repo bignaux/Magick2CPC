@@ -1,6 +1,7 @@
 #include "cpc.h"
 
 mode_info modes[4] = {
+// ppb 	|  bpp 	| colors |  normal | overscan
 { 2 , 4 , 16, { 160 , 200 } , { 192 , 264 }},
 { 4 , 2 , 4 , { 320 , 200 } , { 384 , 272 }},
 { 8 , 1 , 2 , { 640 , 200 } , { 768 , 272 }},

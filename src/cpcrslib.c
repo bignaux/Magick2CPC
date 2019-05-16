@@ -1,5 +1,51 @@
 #include "cpcrslib.h"
 
+int FormatAsmArray(char ** outBuffer, const unsigned char * array, 
+	const int rows, const int columns, const char * name, const char * format)
+{
+	int j,bufcnt = 0;
+	size_t length = 0;
+	if ( outBuffer != NULL ) 
+		length = strlen(*outBuffer);
+	// TODO: according to format
+	size_t outSize = columns * (5 + 4 * rows) * sizeof(char) + 100 + length;
+	fprintf(stderr,"previous length = %ld, outSize = %ld \n", length, outSize );
+
+	*outBuffer = (char*) realloc(*outBuffer,outSize);
+	if (*outBuffer == NULL)
+	{
+		perror(":realloc");
+		return 0;
+	}
+	else fprintf(stderr,"realloc ok\n" );
+
+	const unsigned char * parray = array;
+
+	char *localPointer = *outBuffer + length;
+	fprintf(stderr, "localPointer = 0x%p\n", localPointer);
+
+	bufcnt += sprintf(localPointer + bufcnt, "\n._%s\n",name);
+
+	for(int i = 0; i < rows; i++)
+	{
+		fprintf(stderr, "defb ");
+		bufcnt += sprintf(localPointer + bufcnt, "defb ");
+		for( j = 0; j < columns - 1; j++)
+		{
+			fprintf(stderr, format, *(parray + j));
+			fprintf(stderr, ",");
+			bufcnt += sprintf(localPointer + bufcnt, format, *(parray + j));			
+			bufcnt += sprintf(localPointer + bufcnt, ",");
+		}
+		fprintf(stderr, format, *(parray + j + 1));
+		fprintf(stderr, "\n");
+		bufcnt += sprintf(localPointer + bufcnt, format, *(parray + j + 1));
+		bufcnt += sprintf(localPointer + bufcnt, "\n");
+		parray += columns;
+	}
+	return bufcnt;
+}
+
 /**
  * Convert an image to a cpcrslib sprite or tile
  * @param image_wand the magick wand to transform
@@ -9,51 +55,40 @@
  * @return size of outBuffer
  */
 
-int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned char mode)
+int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked)
 {
 
-	char *localPointer;
+	char *localPointer = malloc(100);
+	char * filename = MagickGetImageFilename(image_wand);
 	long y;
-	size_t columns, rows;
+	size_t columns, rows, nbcolors, ppb;
+	nbcolors = MagickGetImageColors(image_wand);
+	ppb = nbcolors / 8 ; //TODO
 	PixelIterator *iterator;
 	PixelWand **pixels;
 	register long x;
-	int bufcnt;
-	int palettesize;
+	int bufcnt = 0;
 
-	int ppb = (int) modes[mode].ppb;
-	unsigned char pixel;
 	unsigned char databyte[ppb];
 	unsigned char maskbyte[ppb];
 	int j;
 
-	unsigned char palette[modes[mode].nbcolors];
-	memset(palette, 28, modes[mode].nbcolors * sizeof(unsigned char));
-	palettesize = 16 + 2 * modes[mode].nbcolors * sizeof(unsigned char);
-
-	char * filename = MagickGetImageFilename(image_wand);
+	unsigned char palette[nbcolors]; // TODO : remove from here
+	memset(palette, 28, nbcolors * sizeof(unsigned char));
 
 	columns = MagickGetImageHeight(image_wand);
 	rows = MagickGetImageWidth(image_wand);
+	unsigned char *pixelarray = (unsigned char *) malloc (rows * columns / ppb);
+	unsigned char *ptrpixelarray = pixelarray;
 
-	fprintf(stderr,"Size %ldx%ld\n", columns, rows);
-	// Labels can be up to 14(?) characters in length
-	int outSize = palettesize + columns * (5 + 4 * rows) * sizeof(char) + 100; // 100 to store buffer name and size...
-	fprintf(stderr,"outSize=%d\n", outSize);
-	localPointer = (char*) malloc(outSize);
-	if (localPointer == NULL)
-	{
-		perror(":malloc");
-		return 0;
-	}
+	fprintf(stderr,"Size %ldx%ld , %ld colors, %ld depth.\n", columns, rows, nbcolors, ppb);
+
 
 	/*
 	 * convert it into a buffer
 	 */
 	filename = basename(filename);
 
-	bufcnt = sprintf(localPointer, "._%s\ndefb %d,%d", filename,
-			(int) rows / 2, (int) columns);
 	iterator = NewPixelIterator(image_wand);
 	if (iterator == (PixelIterator *) NULL)
 		ThrowWandException(image_wand);
@@ -62,7 +97,6 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned cha
 		pixels = PixelGetNextIteratorRow(iterator, &rows);
 		if (pixels == (PixelWand **) NULL)
 			break;
-		bufcnt += sprintf(localPointer + bufcnt, "\ndefb ");
 		for (x = 0; x < (long) rows; x++)
 		{
 			// could it be replace by modulo
@@ -76,21 +110,17 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned cha
 						maskbyte[j] = 0xFF;
 				}
 				databyte[j] = palettise(pixel2cpc(pixels[x + j]), palette,
-						modes[mode].nbcolors);
+						nbcolors);
 			}
 			if (masked)
 			{
-				pixel = cpc2displaypixeldata(maskbyte, ppb);
-				bufcnt += sprintf(localPointer + bufcnt, "$%2.2X,", pixel);
+				*(ptrpixelarray++) = cpc2displaypixeldata(maskbyte, ppb);
 			}
-			pixel = cpc2displaypixeldata(databyte, ppb);
-			bufcnt += sprintf(localPointer + bufcnt, "$%2.2X,", pixel);
+			*(ptrpixelarray++) = cpc2displaypixeldata(databyte, ppb);
 			// verify with ppb != 2
 			x += ppb - 1;
 		}
-		bufcnt--;
 	}
-	bufcnt += sprintf(localPointer + bufcnt, "\n");
 
 	if (y < (long) columns)
 		ThrowWandException(image_wand);
@@ -98,14 +128,14 @@ int cpcrslib(MagickWand *image_wand, char **outBuffer, bool masked, unsigned cha
 	image_wand = DestroyMagickWand(image_wand);
 	MagickWandTerminus();
 
-	// not tested yet
-	// qsort(palette, modes[mode].nbcolors, sizeof(char), sort);
-	bufcnt += sprintf(localPointer + bufcnt, "\n._tintas\ndefb ");
-	//TODO: mode 0 only
-	for (j = 0; j < 15; j++)
-		bufcnt += sprintf(localPointer + bufcnt, "%d,", palette[j]);
-	bufcnt += sprintf(localPointer + bufcnt, "%d\n", palette[++j]);
+	bufcnt += sprintf(localPointer + bufcnt, "/*\t\tGenerated by Magick2CPC : DO NOT EDIT.\t\t*/\n");
+	bufcnt += sprintf(localPointer + bufcnt, "\n#asm\n");
+	bufcnt += FormatAsmArray(&localPointer, pixelarray, rows / ppb , columns , filename, "$%2.2X");
+	bufcnt += FormatAsmArray(&localPointer, palette, 1, nbcolors, "tintas", "%d" );
+	bufcnt += sprintf(localPointer + bufcnt, "#endasm\n");
 
 	*outBuffer = localPointer;
+	fprintf(stderr, "localPointer = 0x%p\n", localPointer);
 	return bufcnt;
 }
+
