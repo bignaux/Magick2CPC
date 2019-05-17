@@ -43,7 +43,7 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 		return 0;
 	}
 	/// @todo manage spritename
-	bufcnt += sprintf(localPointer + bufcnt, "char sprite[] = { %d, %d,",
+	bufcnt += sprintf(localPointer + bufcnt, "char sprite[] = {\n %d, %d, \n",
 			(int) rows, (int) columns);
 
 	if (comment)
@@ -82,11 +82,12 @@ int z88(MagickWand * image_wand, char **outBuffer, bool comment)
 			else
 				bits++;
 		}
+		bufcnt += sprintf(localPointer + bufcnt, "\n");
 		if (comment)
 			commentcnt += sprintf(localPointer + commentcnt, "\n");
 	}
 
-	bufcnt += sprintf(localPointer + bufcnt - 1, " };\n");
+	bufcnt += sprintf(localPointer + bufcnt - 2, " };\n");
 	bufcnt--;
 
 	if (comment)

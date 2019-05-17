@@ -17,6 +17,8 @@ magick2cpc_SOURCES = \
 	magick2cpc.c      \
 	cpcutils.c      \
 	cpcutils.h      \
+	codegen.c \
+	codegen.h \
 	cpc.h      \
 	z88.c      \
 	z88.h      \
@@ -24,7 +26,8 @@ magick2cpc_SOURCES = \
 	raster.h      \
 	cpcrslib.c      \
 	cpcrslib.h      \
-	cpc.c
+	cpc.c 
+
 
 magick2cpc_LDFLAGS = 
 

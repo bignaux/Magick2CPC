@@ -17,11 +17,11 @@ What is Magick2CPC?
 ------------------
 
 ![](pc-mode0.png)
-<!-- https://www.peppercarrot.com/ -->
-Pepper & Carrot / mode 0
+<!-- https://www.davidrevoy.com/article605/best-practices-for-attribution -->
+**A derivative of [Flight of Spring](https://www.peppercarrot.com) by D.Revoy, CC-By - running on caprice32**
 
 
-Magick2CPC is an image converter that produce source code to CPC and other target. ~~It supports
+Magick2CPC is an image converter that produce source code to CPC and other old target. ~~It supports
 all ImageMagick image format~~ but does not rezise image for you. You have to provide well sized image that fit with the feature you want to perform. Unlike graphic tools, it tend to be integrating as a part of a software toolchain like in Makefile.
 
 see http://jubatian.com/articles/using-non-square-pixel-aspect-ratios-in-gimp/
@@ -44,6 +44,12 @@ http://www.z88dk.org/wiki/doku.php?id=library:sprites:monosprites
 if --boolean option is used, it add a visualisation of the image as a comment.
 STATUS : OK
 
+From z88dk wiki :
+> The sprite functions are based on a special data structure permitting dynamic sprite sizes: the first two bytes define the sprite size, while the next ones describe the picture.
+> 
+> The bits are right-padded to fill the last byte in a row.
+
+
 **cpcrslib sprite**
 
 https://sourceforge.net/projects/cpcrslib/
@@ -51,11 +57,6 @@ if --boolean option is used, it produces non masked sprite.
 http://www.cpcwiki.eu/index.php/CPCRSlib list some games with source using it.
 
 STATUS : NEED SOME WORK : only mode 0 tested.
-
-http://www.amstrad.es/espsoft/herramientas/sprot11.html graphic tool, Windows, closed source
-
-**CPC assembly raster** 
-STATUS : OK
 
 Limitations and issues:
 ----------------------

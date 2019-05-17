@@ -16,6 +16,7 @@ struct Sprite {
     uchar buffer[];
 };
 
+//TODO : uchar -> uint
 inverse_color(uchar * buffer, const uchar height , const uchar width )
 {
     int i = 0;
@@ -32,7 +33,7 @@ main()
     cpc_DisableFirmware();
     cpc_SetMode(2);
     // https://codeforwin.org/2017/12/access-two-dimensional-array-using-pointers-c-programming.html
-    inverse_color(&(sprite+2),sprite[0],sprite[1]);
+    // inverse_color(&(sprite+2),sprite[0],sprite[1]); 
     putsprite(SPR_OR, 0, 0, sprite);
     while (!cpc_AnyKeyPressed()){}   
 }

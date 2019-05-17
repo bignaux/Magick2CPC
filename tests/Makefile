@@ -24,10 +24,10 @@ z88dk-cpc_PutSp.cpc: z88dk-cpc_PutSp.c z88dk-cpc_PutSp.h
 
 # source https://www.peppercarrot.com/0_sources/0ther/artworks/hi-res/2018-11-28_coc_by-David-Revoy.jpg
 # limite by uncrustify : #define AL_SIZE 8000
+# uncrustify -c uncrustify-c-cpp.cfg --replace z88dk-putsprite.h
 z88dk-putsprite.h: coc.png
 	../src/magick2cpc -z $^ -o $@
-	uncrustify -c uncrustify-c-cpp.cfg --replace z88dk-putsprite.h
-
+	
 z88dk-putsprite.cpc: z88dk-putsprite.c z88dk-putsprite.h
 	$(CC) $(CFLAGS) $< -o $@
 
